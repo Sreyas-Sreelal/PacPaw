@@ -6,7 +6,7 @@ from colorama import Fore, Back, Style
 
 check = True;
 wikiurl = "http://wiki.sa-mp.com/wiki/";
-githuburl="https://www.github.com";
+github_url="https://www.github.com";
 function_name = "";
 function_description = "";
 function_parameters = "";
@@ -30,7 +30,7 @@ def GetPlugin( ):
 	print( Fore.WHITE + "Input plugin name to download " );
 	plugin_name = input( );
 
-	req = requests.get( "https://github.com/search?l=C%2B%2B&q=topic%3Asa-mp+" + plugin_name + "&type=Repositories" );
+	req = requests.get( github_url  + "/search?l=C%2B%2B&q=topic%3Asa-mp+" + plugin_name + "&type=Repositories" );
 	soup = BeautifulSoup( req.content , "html.parser" );
 	data = soup.find_all( "a" , { "class" : "v-align-middle" } );
 	  
@@ -39,13 +39,13 @@ def GetPlugin( ):
 	          break;
 	     #print("Loop1");
 	     #print(link['href']);
-	     req2 = requests.get( "https://github.com" + link[ 'href' ] + "/releases" );
+	     req2 = requests.get( github_url + link[ 'href' ] + "/releases" );
 	     soup2 = BeautifulSoup( req2.content , "html.parser" );
 	     data2 = soup2.find( "ul" , { "class" : "release-downloads"} );
 	     #print(link['href']);
 	     a = data2.find( 'a' , href = True );
 	     #print(a['href']);
-	     if download_file( "https://github.com" + a[ 'href' ] ) is not None:
+	     if download_file( github_url + a[ 'href' ] ) is not None:
 	         print( Fore.GREEN + "\nSuccessfully downloaded " + plugin_name );
 	         break;
 
