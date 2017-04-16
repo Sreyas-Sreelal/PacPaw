@@ -29,25 +29,39 @@ def download_file( url ):
 def GetPlugin( ):
 	print( Fore.WHITE + "Input plugin name to download " );
 	plugin_name = input( );
-
+	confirm = "";
 	req = requests.get( github_url  + "/search?l=C%2B%2B&q=topic%3Asa-mp+" + plugin_name + "&type=Repositories" );
 	soup = BeautifulSoup( req.content , "html.parser" );
 	data = soup.find_all( "a" , { "class" : "v-align-middle" } );
 	  
 	for link in data:
+	     
 	     if downloaded_plugin == True:
 	          break;
-	     #print("Loop1");
-	     #print(link['href']);
+	     req2 = requests.get( github_url + link[ 'href' ] );
+	     soup2 = BeautifulSoup( req2.content , "html.parser" );
+	     read_me = soup2.find( "article" , { "class" : "markdown-body entry-content" } );
+	     print( Style.BRIGHT );
+	     print( Fore.MAGENTA + " Description of the plugin \n\n" );
+	     print( Fore.BLUE + read_me.text[ 0 : 1000 ]+"....");
+	     print( Style.NORMAL );
+	     print("Press y to confirm the download or n to proceed to next result");
+	     confirm = input();
+	     if confirm == "n" or confirm == "N":
+	     	continue;
 	     req2 = requests.get( github_url + link[ 'href' ] + "/releases" );
 	     soup2 = BeautifulSoup( req2.content , "html.parser" );
 	     data2 = soup2.find( "ul" , { "class" : "release-downloads"} );
-	     #print(link['href']);
+	     
 	     a = data2.find( 'a' , href = True );
-	     #print(a['href']);
-	     if download_file( github_url + a[ 'href' ] ) is not None:
+	     
+	     if download_file( github_url + a [ 'href' ] ) is not None:
 	         print( Fore.GREEN + "\nSuccessfully downloaded " + plugin_name );
 	         break;
+	
+	if downloaded_plugin == False:
+		print( Fore.RED + "Sorry your request couldn't be processed check the name of the plugin" );
+	     	
 
 def GetFunction( ):
     print( Style.BRIGHT );
@@ -88,7 +102,7 @@ print( Style.NORMAL );
 print( "\n\n\t\t\t\t" + Fore.WHITE + "SAMP HELPER" + Fore.MAGENTA + " PYTHON TOOL " + Fore.GREEN + "BY" + Fore.RED + " SREYAS" );
 
 while check == True:
-    print( Fore.WHITE+ "Select your option\n\
+    print( Fore.WHITE+ "\t\tSelect your option\n\
     					1.Search for a function defintion\n\
     					2.Get a plugin\n\
     					3.Quit\n" );
