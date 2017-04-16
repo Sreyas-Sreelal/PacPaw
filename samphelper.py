@@ -26,11 +26,11 @@ def download_file( url ):
                 
     return local_filename
 
-def GetPlugin( ):
+def GetScript( ):
 	print( Fore.WHITE + "Input plugin name to download " );
 	plugin_name = input( );
 	confirm = "";
-	req = requests.get( github_url  + "/search?l=C%2B%2B&q=topic%3Asa-mp+" + plugin_name + "&type=Repositories" );
+	req = requests.get( github_url  + "/search?&q=topic%3Asa-mp+" + plugin_name + "&type=Repositories" );
 	soup = BeautifulSoup( req.content , "html.parser" );
 	data = soup.find_all( "a" , { "class" : "v-align-middle" } );
 	  
@@ -104,13 +104,13 @@ print( "\n\n\t\t\t\t" + Fore.WHITE + "SAMP HELPER" + Fore.MAGENTA + " PYTHON TOO
 while check == True:
     print( Fore.WHITE+ "\t\tSelect your option\n\
     					1.Search for a function defintion\n\
-    					2.Get a plugin\n\
+    					2.Get a samp script\n\
     					3.Quit\n" );
     option = input( );
     if option == "1":
     	GetFunction();
     elif option == "2":
-    	GetPlugin();
+    	GetScript();
     else:
     	exit();    
     print( Fore.WHITE + "\n\n\nDo you want to do anything  more?(Y/N)" );
