@@ -16,24 +16,24 @@ downloaded_plugin = False;
 option = "";
 
 def download_file( url ):
-    local_filename = url.split( '/' )[ -1 ]
+    filename = url.split( '/' )[ -1 ]
     
     r = requests.get( url , stream = True )
-    with open( local_filename , 'wb' ) as f:
-        for chunk in r.iter_content( chunk_size = 1024 ): 
-            if chunk: 
-                f.write( chunk )
+    with open( filename , 'wb' ) as f:
+        for buffer in r.iter_content( chunk_size = 1024 ): 
+            if buffer: 
+                f.write( buffer )
                 
-    return local_filename
+    return filename
 
 def GetScript( ):
-	print( Fore.WHITE + "Input plugin name to download " );
+	print( Fore.WHITE + "Input script name to download " );
 	plugin_name = input( );
 	confirm = "";
-	req = requests.get( github_url  + "/search?&q=topic%3Asa-mp+" + plugin_name + "&type=Repositories" );
+	req = requests.get( github_url  + "/search?&q=" + plugin_name + "+topic%3Asa-mp&type=Repositories" );
 	soup = BeautifulSoup( req.content , "html.parser" );
 	data = soup.find_all( "a" , { "class" : "v-align-middle" } );
-	  
+	downloaded_plugin = False;  
 	for link in data:
 	     
 	     if downloaded_plugin == True:
@@ -42,13 +42,14 @@ def GetScript( ):
 	     soup2 = BeautifulSoup( req2.content , "html.parser" );
 	     read_me = soup2.find( "article" , { "class" : "markdown-body entry-content" } );
 	     print( Style.BRIGHT );
-	     print( Fore.MAGENTA + " Description of the plugin \n\n" );
-	     print( Fore.BLUE + read_me.text[ 0 : 1000 ]+"....");
+	     print( Fore.MAGENTA + " Description of the script \n" );
+	     print( Fore.BLUE + read_me.text[ 0 : 1500 ] + "...." );
 	     print( Style.NORMAL );
-	     print("Press y to confirm the download or n to proceed to next result");
+	     print( Fore.MAGENTA + "Press y to confirm the download or anyother key to proceed to next result");
 	     confirm = input();
-	     if confirm == "n" or confirm == "N":
+	     if confirm is not "y" or confirm is not "Y":
 	     	continue;
+
 	     req2 = requests.get( github_url + link[ 'href' ] + "/releases" );
 	     soup2 = BeautifulSoup( req2.content , "html.parser" );
 	     data2 = soup2.find( "ul" , { "class" : "release-downloads"} );
@@ -57,10 +58,11 @@ def GetScript( ):
 	     
 	     if download_file( github_url + a [ 'href' ] ) is not None:
 	         print( Fore.GREEN + "\nSuccessfully downloaded " + plugin_name );
+	         downloaded_plugin = True;
 	         break;
 	
 	if downloaded_plugin == False:
-		print( Fore.RED + "Sorry your request couldn't be processed check the name of the plugin" );
+		print( Fore.RED + "Sorry your i can't find results " );
 	     	
 
 def GetFunction( ):
