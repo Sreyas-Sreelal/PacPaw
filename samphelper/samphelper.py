@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from colorama import init
-init( );
-from colorama import Fore, Back, Style
+import sys_send
 
 check = True;
 wikiurl = "http://wiki.sa-mp.com/wiki/";
@@ -11,9 +9,10 @@ function_name = "";
 function_description = "";
 function_parameters = "";
 NeedMore = "";
-plugin_name = "";
-downloaded_plugin = False;
+script_name = "";
+downloaded_script = False;
 option = "";
+gist_link = "";
 
 def download_file( url ):
     filename = url.split( '/' )[ -1 ]
@@ -27,47 +26,51 @@ def download_file( url ):
     return filename
 
 def GetScript( ):
-	print( Fore.WHITE + "Input script name to download " );
-	plugin_name = input( );
-	confirm = "";
-	req = requests.get( github_url  + "/search?&q=" + plugin_name + "+topic%3Asa-mp&type=Repositories" );
-	soup = BeautifulSoup( req.content , "html.parser" );
-	data = soup.find_all( "a" , { "class" : "v-align-middle" } );
-	downloaded_plugin = False;  
-	for link in data:
-	     
-	     if downloaded_plugin == True:
-	          break;
-	     req2 = requests.get( github_url + link[ 'href' ] );
-	     soup2 = BeautifulSoup( req2.content , "html.parser" );
-	     read_me = soup2.find( "article" , { "class" : "markdown-body entry-content" } );
-	     print( Style.BRIGHT );
-	     print( Fore.MAGENTA + " Description of the script \n" );
-	     print( Fore.BLUE + read_me.text[ 0 : 1500 ] + "...." );
-	     print( Style.NORMAL );
-	     print( Fore.MAGENTA + "Press y to confirm the download or anyother key to proceed to next result");
-	     confirm = input();
-	     if confirm is not "y" or confirm is not "Y":
-	     	continue;
-
-	     req2 = requests.get( github_url + link[ 'href' ] + "/releases" );
-	     soup2 = BeautifulSoup( req2.content , "html.parser" );
-	     data2 = soup2.find( "ul" , { "class" : "release-downloads"} );
-	     
-	     a = data2.find( 'a' , href = True );
-	     
-	     if download_file( github_url + a [ 'href' ] ) is not None:
-	         print( Fore.GREEN + "\nSuccessfully downloaded " + plugin_name );
-	         downloaded_plugin = True;
-	         break;
+    
+    sys_send.ask( "script's name to download " );
+    script_name = input( );
+    confirm = "";
+    req = requests.get( github_url  + "/search?&q=" + script_name + "+topic%3Asa-mp&type=Repositories" );
+    soup = BeautifulSoup( req.content , "html.parser" );
+    data = soup.find_all( "a" , { "class" : "v-align-middle" } );
+    downloaded_script = False;  
 	
-	if downloaded_plugin == False:
-		print( Fore.RED + "Sorry your i can't find results " );
+    for link in data:
+
+        if downloaded_script == True:
+            break;
+	     
+        req2 = requests.get( github_url + link[ 'href' ] );
+        soup2 = BeautifulSoup( req2.content , "html.parser" );
+        read_me = soup2.find( "article" , { "class" : "markdown-body entry-content" } );
+
+        sys_send.print_magenta( " Description of the script \n" );
+        sys_send.print_blue( read_me.text[ 0 : 1500 ] + "...." );
+         
+        sys_send.print_magenta( "Press y to confirm the download or anyother key to proceed to next result" );
+        confirm = input();
+                 
+        if confirm is not "y" and confirm is not "Y":
+            continue;
+
+        req2 = requests.get( github_url + link[ 'href' ] + "/releases" );
+        soup2 = BeautifulSoup( req2.content , "html.parser" );
+        data2 = soup2.find( "ul" , { "class" : "release-downloads"} );
+                 
+        a = data2.find( 'a' , href = True );
+                 
+        if download_file( github_url + a [ 'href' ] ) is not None:
+            sys_send.sucess(  "Successfully downloaded " + script_name );
+            downloaded_script = True;
+            break;
+
+    if downloaded_script == False:
+        sys_send.error( "Sorry your i can't find results " );
 	     	
 
 def GetFunction( ):
-    print( Style.BRIGHT );
-    print( Fore.WHITE + "\nInput function name to search in wiki" );
+    
+    sys_send.ask( "function name to search in wiki" );
     function_name  = input( );
     r = requests.get( wikiurl + function_name );
     s = r.content;
@@ -75,36 +78,33 @@ def GetFunction( ):
 
     try:
         description = soup.find_all( "div" , { "class" : "description" } );
-        print( Fore.YELLOW + "\nDescription\n" );
-        print( Fore.MAGENTA + "\t" + description[0].text );
+        sys_send.print_yellow( "\nDescription\n" );
+        sys_send.print_magenta( "\t" + description[0].text );
 
         try:
             params = soup.find_all( "div" , { "class" : "parameters" } );
-            print( Fore.YELLOW + "\nParameters\n" );
-            print( Fore.CYAN + "\t" + params[0].text );
+            sys_send.print_yellow( "\nParameters\n" );
+            sys_send.print_cyan( "\t" + params[0].text );
 
         except IndexError:
-            print( "\nInvalid Function specified" );
+            sys_send.error( "Invalid Function specified" );
 
         try:
             example_code = soup.find_all( "pre" , { "class" : "pawn" } );
-            print( Fore.YELLOW + "\nExample code\n" );
-            print( Back.BLACK + Fore.GREEN + example_code[0].text );
-            print( Back.RESET );
+            sys_send.print_yellow( "Example code\n" );
+            sys_send.code( example_code[0].text );
+            
 
         except IndexError:
-            print( Fore.RED + "There is no example code available for this function" );    
+            sys_send.warning( "There is no example code available for this function" );    
 
     except IndexError:
-        print( Fore.RED + "No results found check your function name (case sensitive)" );
+        sys_send.error( "No results found check your function name (case sensitive)" );
 
-
-
-print( Style.NORMAL );
-print( "\n\n\t\t\t\t" + Fore.WHITE + "SAMP HELPER" + Fore.MAGENTA + " PYTHON TOOL " + Fore.GREEN + "BY" + Fore.RED + " SREYAS" );
+sys_send.print_title( );
 
 while check == True:
-    print( Fore.WHITE+ "\t\tSelect your option\n\
+    sys_send.print_white( "\t\tSelect your option\n\
     					1.Search for a function defintion\n\
     					2.Get a samp script\n\
     					3.Quit\n" );
@@ -115,7 +115,7 @@ while check == True:
     	GetScript();
     else:
     	exit();    
-    print( Fore.WHITE + "\n\n\nDo you want to do anything  more?(Y/N)" );
+    sys_send.print_white( "\n\n\nDo you want to do anything  more?(Y/N)" );
     NeedMore = input( );
 
     if NeedMore == "n" or NeedMore == "N":
