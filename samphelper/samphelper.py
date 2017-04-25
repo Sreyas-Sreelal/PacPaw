@@ -3,8 +3,9 @@ from bs4 import BeautifulSoup
 import sys_send
 
 check = True;
-wikiurl = "http://wiki.sa-mp.com/wiki/";
+wiki_url = "http://wiki.sa-mp.com/wiki/";
 github_url="https://www.github.com";
+gist_url = "https://gist.github.com";
 function_name = "";
 function_description = "";
 function_parameters = "";
@@ -12,11 +13,33 @@ NeedMore = "";
 script_name = "";
 downloaded_script = False;
 option = "";
-gist_link = "";
 
-def download_file( url ):
-    filename = url.split( '/' )[ -1 ]
+
+def GetSnippet( ):
     
+    sys_send.ask( "name of the code snippet you want " );
+    snippet_name = input();
+    confirm = "";
+    req = requests.get( gist_url  + "/search?&q=" + snippet_name + "+language%3Apawn" );
+    soup = BeautifulSoup( req.content , "html.parser" );
+    data = soup.find_all( "a" , { "class" : "link-overlay" } );
+    
+    for link in data:
+        
+        req2 = requests.get( link[ 'href' ] + "/raw" );
+        soup2 = BeautifulSoup( req2.content , "html.parser" );
+        sys_send.print_yellow( "Snippet description\n" );
+        sys_send.print_green( soup2.get_text() );
+        sys_send.print_magenta( "Press N to proceed to next result" );
+        confirm = input();
+        
+        if confirm is not "n" and confirm is not "N":
+            break;
+
+        
+def download_file( url ):
+    
+    filename = url.split( '/' )[ -1 ]
     r = requests.get( url , stream = True )
     with open( filename , 'wb' ) as f:
         for buffer in r.iter_content( chunk_size = 1024 ): 
@@ -65,14 +88,14 @@ def GetScript( ):
             break;
 
     if downloaded_script == False:
-        sys_send.error( "Sorry your i can't find results " );
+        sys_send.error( "Sorry  can't find more results " );
 	     	
 
 def GetFunction( ):
     
     sys_send.ask( "function name to search in wiki" );
     function_name  = input( );
-    r = requests.get( wikiurl + function_name );
+    r = requests.get( wiki_url + function_name );
     s = r.content;
     soup = BeautifulSoup( s , "html.parser" );
 
@@ -105,16 +128,19 @@ sys_send.print_title( );
 
 while check == True:
     sys_send.print_white( "\t\tSelect your option\n\
-    					1.Search for a function defintion\n\
-    					2.Get a samp script\n\
-    					3.Quit\n" );
+    					       1.Search for a function defintion\n\
+    					       2.Get a samp script\n\
+                               3.Search for snippet\n\
+    					       4.Quit\n" );
     option = input( );
     if option == "1":
-    	GetFunction();
+    	GetFunction( );
     elif option == "2":
-    	GetScript();
+    	GetScript( );
+    elif option == "3":
+        GetSnippet( );
     else:
-    	exit();    
+    	exit( );    
     sys_send.print_white( "\n\n\nDo you want to do anything  more?(Y/N)" );
     NeedMore = input( );
 
