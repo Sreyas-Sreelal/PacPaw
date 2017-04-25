@@ -7,3 +7,5 @@ Im planning to add more features to it.
 * Get samp based repos. 
   Note: if this program can't find your project make sure you have added "sa-mp" as topics and made a release in your repository.
 * Gets samp based snippets (not implemented yet)
+
+![alt text](https://github.com/sreyas-sreelal/samphelper/raw/master/src/common/image/usage.gif "Usage")

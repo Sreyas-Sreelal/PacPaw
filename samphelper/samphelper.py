@@ -1,3 +1,11 @@
+
+"""
+Samp Helper a python based package manager for samp built with the power of web scraping.
+Developer : Sreyas (__SyS__) : https://github.com/Sreyas-Sreelal
+Contributors / Collabrators : None
+"""
+
+
 import requests
 from bs4 import BeautifulSoup
 import sys_send
@@ -127,11 +135,12 @@ def GetFunction( ):
 sys_send.print_title( );
 
 while check == True:
-    sys_send.print_white( "\t\tSelect your option\n\
-    					       1.Search for a function defintion\n\
-    					       2.Get a samp script\n\
-                               3.Search for snippet\n\
-    					       4.Quit\n" );
+    sys_send.print_white( "\t\t\t\n\
+                               Select your option: \n\
+    					       \t 1.Search for a function defintion\n\
+    					       \t 2.Get a samp script\n\
+                               \t\t\t 3.Search for snippet\n\
+    					       \t 4.Quit\n" );
     option = input( );
     if option == "1":
     	GetFunction( );
