@@ -1,13 +1,11 @@
-# SampHelper
-This is a small python script that will aid samp scripters for taking a quick glance at each function provided by samp.
-Im planning to add more features to it.
+# PacPaw
+PacPaw is pawn package manager for SAMP wrriten in python and is still under developement.It mainly relies on webscraping with BeautifulSoup.In addition to it it also helps scripters for gathering snippets based on pawn and function references documented for SA-MP.
 
 ## Features
 * Scrapes function defintions from wiki for quick references
-* Get samp based repos. 
+* In built Pack Manager for pawn. 
   Note: if this program can't find your project make sure you have added "sa-mp" as topics and made a release in your repository.
-* Gets samp based snippets (not implemented yet)
-* Gets samp based snippets
+* Gets pawn snippets
 
-![alt text](https://github.com/sreyas-sreelal/samphelper/raw/master/src/common/image/usage.gif "Usage")
-
+## Contributors / Collabrators
+*None
