@@ -17,8 +17,6 @@ import click
 Version = "1.0";
 
 
-
-print("started")
 @click.group(invoke_without_command=True)
 @click.pass_context
 
