@@ -8,7 +8,7 @@ script_name = "";
 downloaded_script = False;
 
 def GetRepo( script_name ):
-    
+    sys_send.print_white("Searching for packages in github......\n")
     req = requests.get( github_url  + "/search?&q=" + script_name + "+topic%3Asa-mp&type=Repositories" );
     soup = BeautifulSoup( req.content , "html.parser" );
     data = soup.find_all( "a" , { "class" : "v-align-middle" } );
@@ -31,7 +31,7 @@ def GetRepo( script_name ):
                  
         if confirm is not "y" and confirm is not "Y":
             continue;
-
+        sys_send.print_white( "Starting download the pacakage " + script_name + "....." );   
         req2 = requests.get( github_url + link[ 'href' ] + "/releases" );
         soup2 = BeautifulSoup( req2.content , "html.parser" );
         data2 = soup2.find( "ul" , { "class" : "release-downloads"} );
@@ -44,4 +44,4 @@ def GetRepo( script_name ):
             break;
 
     if downloaded_script == False:
-        sys_send.error( "Sorry  can't find more results " );
+        sys_send.error( "Failed to find package specified....." );

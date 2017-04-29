@@ -17,15 +17,17 @@ import click
 Version = "1.0";
 
 
+
+print("started")
 @click.group(invoke_without_command=True)
 @click.pass_context
 
 def cli(ctx):
-	if ctx.invoked_subcommand is None:
-		print("PacPaw Build" + Version );
-		print("Usage : pacpaw [OPTIONS] COMMANDS [ARGS]\n");
-		print("Use --help to see all available commands");
-		pass
+        if ctx.invoked_subcommand is None:
+                print("PacPaw Build" + Version );
+                print("Usage : pacpaw [OPTIONS] COMMANDS [ARGS]\n");
+                print("Use --help to see all available commands");
+                pass
 
 @click.command(help='Provides sa-mp function\'s definitions')
 @click.option('--name', prompt='Your function name',
@@ -38,16 +40,18 @@ def refer(name):
 @click.option('--name', prompt='Script\'s name',
               help='Name of sa-mp script.')
 def getscript(name):
-	GetRepo(name);
+        GetRepo(name);
 
 @click.command(help='Gets samp snippet')
 @click.option('--name', prompt='Snippet\'s name',
               help='Name of sa-mp snippet.')
 def getsnippet(name):
-	GetSnippet(name);
+        GetSnippet(name);
 
 cli.add_command(refer);
 cli.add_command(getscript);
 cli.add_command(getsnippet);
 
 
+if __name__ == '__main__':
+	cli();

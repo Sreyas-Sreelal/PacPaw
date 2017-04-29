@@ -12,8 +12,9 @@ def GetFunction( function_name ) :
     r = requests.get( wiki_url + function_name );
     s = r.content;
     soup = BeautifulSoup( s , "html.parser" );
-    
+    sys_send.print_white("Fetching results from wiki.......\n")
     try:
+        
         description = soup.find_all( "div" , { "class" : "description" } );
         sys_send.print_yellow( "\nDescription\n" );
         sys_send.print_magenta( "\t" + description[0].text );
@@ -24,7 +25,7 @@ def GetFunction( function_name ) :
             sys_send.print_cyan( "\t" + params[0].text );
 
         except IndexError:
-            sys_send.error( "Invalid Function specified" );
+            sys_send.error( "Invalid Function specified no result found" );
 
         try:
             example_code = soup.find_all( "pre" , { "class" : "pawn" } );
