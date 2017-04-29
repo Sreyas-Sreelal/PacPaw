@@ -12,7 +12,6 @@ import sys_send
 from gistscrap import GetSnippet
 from githubreposcrap import GetRepo
 from function_search import GetFunction
-import click 
 
 Version = "1.0";
 

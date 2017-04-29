@@ -30,7 +30,7 @@ def print_cyan( str ):
 	print(  Style.BRIGHT + Fore.CYAN + str  );
 
 def sucess( str ):
-	print( Style.BRIGHT + Fore.YELLOW + "[***]" + Fore.GREEN + str );
+	print( Style.BRIGHT + Fore.YELLOW + "\n[***]" + Fore.GREEN + str );
 
 def warning( str ):
 	print( Style.BRIGHT + Fore.RED + "[WARNING!]" + Style.NORMAL + str );
