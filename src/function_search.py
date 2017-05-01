@@ -9,10 +9,16 @@ function_parameters = "";
 
 def GetFunction( function_name ) :
     
-    r = requests.get( wiki_url + function_name );
-    s = r.content;
-    soup = BeautifulSoup( s , "html.parser" );
+    try:
+        r = requests.get( wiki_url + function_name );
+        soup = BeautifulSoup( r.content , "html.parser" );
+    
+    except:
+            sys_send.error("Please check your internet connection");
+            exit(0);
+    
     sys_send.print_white("Fetching results from wiki.......\n")
+    
     try:
         
         description = soup.find_all( "div" , { "class" : "description" } );

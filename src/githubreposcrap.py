@@ -9,7 +9,14 @@ downloaded_script = False;
 
 def GetRepo( script_name ):
     sys_send.print_white("Searching for packages in github......\n")
-    req = requests.get( github_url  + "/search?&q=" + script_name + "+topic%3Asa-mp&type=Repositories" );
+    
+    try:
+        req = requests.get( github_url  + "/search?&q=" + script_name + "+topic%3Asa-mp&type=Repositories" );
+    
+    except:
+            sys_send.error("Please check your internet connection");
+            exit(0);
+    
     soup = BeautifulSoup( req.content , "html.parser" );
     data = soup.find_all( "a" , { "class" : "v-align-middle" } );
     downloaded_script = False;  
@@ -19,8 +26,13 @@ def GetRepo( script_name ):
         if downloaded_script == True:
             break;
 	     
-        req2 = requests.get( github_url + link[ 'href' ] );
-        soup2 = BeautifulSoup( req2.content , "html.parser" );
+        try:
+            req2 = requests.get( github_url + link[ 'href' ] );
+            soup2 = BeautifulSoup( req2.content , "html.parser" );
+        except:
+            sys_send.error("Please check your internet connection");
+            exit(0);
+        
         read_me = soup2.find( "article" , { "class" : "markdown-body entry-content" } );
 
         sys_send.print_magenta( " Description of the script \n" );
@@ -31,11 +43,20 @@ def GetRepo( script_name ):
                  
         if confirm is not "y" and confirm is not "Y":
             continue;
-        sys_send.print_white( "Starting download the pacakage " + script_name + "....." );   
-        req2 = requests.get( github_url + link[ 'href' ] + "/releases" );
+        sys_send.print_white( "Searching for binaries " + script_name + "....." );   
+        
+        try :
+            req2 = requests.get( github_url + link[ 'href' ] + "/releases" );
+
+        except:
+            sys_send.error("Please check your internet connection");
+            exit(0);
+        
         soup2 = BeautifulSoup( req2.content , "html.parser" );
         data2 = soup2.find( "ul" , { "class" : "release-downloads"} );
-                 
+        if data2 is None:
+            sys_send.error("Failed to find binary release for this pacakage contact the developer");
+            exit(0)          
         a = data2.find( 'a' , href = True );
                  
         if network_handle.download_file( github_url + a [ 'href' ] ) is not None:
