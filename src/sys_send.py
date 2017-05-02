@@ -36,7 +36,7 @@ def warning( str ):
 	print( Style.BRIGHT + Fore.RED + "[WARNING!]" + Style.NORMAL + str );
 
 def error ( str ):
-	print( Style.BRIGHT + Fore.RED + "[Error]" + str );
+	print( Style.BRIGHT + Fore.RED + "[Error] " + str );
 
 def ask( str ):
 	print( Style.BRIGHT + Fore.WHITE + "Input " + str );
