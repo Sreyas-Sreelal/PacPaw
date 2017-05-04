@@ -7,33 +7,33 @@ def download_file( url , filename):
     sys_send.print_white( 'Connecting to ftp server.....' )
         
     try:
-        r = requests.get( url , stream = True );
-        length = int( r.headers.get( 'content-length' ) );
+        REQUEST_FTP_FILE = requests.get( url , stream = True );
+        FILE_SIZE = int( REQUEST_FTP_FILE.headers.get( 'content-FILE_SIZE' ) );
         
-        if length < 1023:
-             sys_send.print_white( "Package Size : %d Bytes" % ( length ) );
+        if FILE_SIZE < 1023:
+             sys_send.print_white( "Package Size : %d Bytes" % ( FILE_SIZE ) );
         
-        elif length > 1023 and length < 1048575 :
-            sys_send.print_white( "Package Size : %d KB" % ( length / 1024 ) );
+        elif FILE_SIZE > 1023 and FILE_SIZE < 1048575 :
+            sys_send.print_white( "Package Size : %d KB" % ( FILE_SIZE / 1024 ) );
         
-        elif length > 1048575:
-            sys_send.print_white( "Package Size : %d MB" % ( length / 1048576 ) );
+        elif FILE_SIZE > 1048575:
+            sys_send.print_white( "Package Size : %d MB" % ( FILE_SIZE / 1048576 ) );
     
     except:
            sys_send.error( "Please check your internet connection" );
            exit( 0 );
     
-    downloaded = int( 0 );
+    RECIEVED_STATUS = int( 0 );
     sys_send.print_white( "Downloading......." );
     
-    with open( filename , 'wb' ) as f:
+    with open( filename , 'wb' ) as chunk_file:
          
-        for buffer in r.iter_content( chunk_size = 1024 ):
+        for buffer in REQUEST_FTP_FILE.iter_content( chunk_size = 1024 ):
             
             if buffer:
-                downloaded += len( buffer );
-                f.write( buffer );
-                done = int( 50 * ( downloaded / length ) );
+                RECIEVED_STATUS += len( buffer );
+                chunk_file.write( buffer );
+                done = int( 50 * ( RECIEVED_STATUS / FILE_SIZE ) );
                 sys.stdout.write( " %s%%" % ( 2 * done ) + "\r[%s%s]" % ( '#' * done , ' ' * ( 50 - done ) ) );
                 sys.stdout.flush( );
     

@@ -2,16 +2,15 @@ import requests
 from bs4 import BeautifulSoup
 import sys_send
 
-wiki_url = "http://wiki.sa-mp.com/wiki/";
-function_name = "";
-function_description = "";
-function_parameters = "";
-
-def GetFunction( function_name ) :
+WIKI_URL = "http://wiki.sa-mp.com/wiki/";
+FUNCTION_DESCRIPTION = "";
+FUNCTION_PARAMETER = "";
+EXAMPLE_CODE = "";
+def GetFunction( FUNCTION_NAME ) :
     
     try:
-        r = requests.get( wiki_url + function_name );
-        soup = BeautifulSoup( r.content , "html.parser" );
+        request_to_wiki = requests.get( WIKI_URL + FUNCTION_NAME );
+        WIKI_CONTENT_HTML = BeautifulSoup( request_to_wiki.content , "html.parser" );
     
     except:
             sys_send.error("Please check your internet connection");
@@ -21,22 +20,22 @@ def GetFunction( function_name ) :
     
     try:
         
-        description = soup.find_all( "div" , { "class" : "description" } );
+        FUNCTION_DESCRIPTION = WIKI_CONTENT_HTML.find_all( "div" , { "class" : "description" } );
         sys_send.print_yellow( "\nDescription\n" );
-        sys_send.print_magenta( "\t" + description[0].text );
+        sys_send.print_magenta( "\t" + FUNCTION_DESCRIPTION[0].text );
 
         try:
-            params = soup.find_all( "div" , { "class" : "parameters" } );
+            FUNCTION_PARAMETER = WIKI_CONTENT_HTML.find_all( "div" , { "class" : "parameters" } );
             sys_send.print_yellow( "\nParameters\n" );
-            sys_send.print_cyan( "\t" + params[0].text );
+            sys_send.print_cyan( "\t" + FUNCTION_PARAMETER[0].text );
 
         except IndexError:
             sys_send.error( "Invalid Function specified no result found" );
 
         try:
-            example_code = soup.find_all( "pre" , { "class" : "pawn" } );
+            EXAMPLE_CODE = WIKI_CONTENT_HTML.find_all( "pre" , { "class" : "pawn" } );
             sys_send.print_yellow( "Example code\n" );
-            sys_send.code( example_code[0].text );
+            sys_send.code( EXAMPLE_CODE[0].text );
             
 
         except IndexError:
