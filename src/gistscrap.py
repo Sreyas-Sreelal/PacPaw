@@ -1,3 +1,11 @@
+# ~ src/gistscrap.py
+
+"""
+
+This module is responsible for scraping gist.Just a helping module for scripters.
+
+"""
+
 import requests
 from bs4 import BeautifulSoup
 import sys_send
@@ -34,3 +42,9 @@ def GetSnippet( SNIPPET_NAME ):
         
         if confirm is not "n" and confirm is not "N":
             break;
+
+
+
+
+
+            

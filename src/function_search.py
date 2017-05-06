@@ -1,3 +1,11 @@
+# ~ src/function_search.py
+
+"""
+
+This module is responsible for scrapnig wiki of samp. This is just a helping module for scripters.
+
+"""
+
 import requests
 from bs4 import BeautifulSoup
 import sys_send
@@ -43,3 +51,10 @@ def GetFunction( FUNCTION_NAME ) :
 
     except IndexError:
         sys_send.error( "No results found check your function name (case sensitive)" );
+
+
+
+
+
+
+        

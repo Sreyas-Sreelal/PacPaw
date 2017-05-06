@@ -1,7 +1,13 @@
+# ~ src/sys_send.py
 
+"""
+
+This module is responsible for sending colorful text messages to user.
+
+"""
 
 from colorama import init
-init( autoreset = True );
+init( autoreset = True ); # clean the terminal after splashing colors on them
 from colorama import Fore, Back, Style
 
 
@@ -47,6 +53,8 @@ def prompt( str ):
 def code( str ):
 	print( Style.BRIGHT + Back.BLACK + Fore.GREEN + str );
 
+# a little class that needed to be expanded for future purposes
+
 class term_style:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
@@ -56,5 +64,11 @@ def print_bold( str , color = Fore.WHITE ):
 
 def print_underlined( str , color = Fore.WHITE ):
 	print( term_style.UNDERLINE + str );
+
+
+
+
+
+
 
 

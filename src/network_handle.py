@@ -1,3 +1,11 @@
+# ~ src/network_handle.py
+
+"""
+
+This module is responsible for handling network based shits.Like downloading ,streaming etc..
+
+"""
+
 import requests
 import sys_send
 import sys
@@ -7,8 +15,9 @@ def download_file( url , filename):
     sys_send.print_white( 'Connecting to ftp server.....' )
         
     try:
+        
         REQUEST_FTP_FILE = requests.get( url , stream = True );
-        FILE_SIZE = int( REQUEST_FTP_FILE.headers.get( 'content-FILE_SIZE' ) );
+        FILE_SIZE = int( REQUEST_FTP_FILE.headers.get( 'content-length' ) );
         
         if FILE_SIZE < 1023:
              sys_send.print_white( "Package Size : %d Bytes" % ( FILE_SIZE ) );

@@ -1,4 +1,6 @@
 
+# src/pacpaw.py - main module
+
 """
 
 PacPaw a python based package manager for pawn language.
@@ -77,6 +79,7 @@ def getsnippet( name ):
         GetSnippet( name );
 
 
+# initialising commandline
 
 cli.add_command( refer );
 cli.add_command( getscript );
